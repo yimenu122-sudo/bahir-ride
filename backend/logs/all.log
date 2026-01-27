@@ -1,0 +1,48 @@
+2026-01-24 17:41:50:4150 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-24 17:45:02:452 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-24 18:01:51:151 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-24 18:25:52:2552 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-25 23:16:57:1657 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-25 23:47:30:4730 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:04:44:444 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:05:24:524 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:05:53:553 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:06:20:620 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:10:50:1050 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:27:25:2725 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:28:25:2825 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:28:38:2838 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:30:13:3013 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 00:36:37:3637 [32minfo[39m: [32mEmail sent: <43273a4d-c103-d00d-34ce-96b697a5eb37@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-26 09:25:16:2516 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 09:29:39:2939 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 09:47:31:4731 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 09:57:45:5745 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 10:14:38:1438 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 14:40:28:4028 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 14:50:23:5023 [32minfo[39m: [32mEmail sent: <26c779c1-c81e-8b73-9344-61cbff8cda32@gmail.com> to shiferawyimenu@gmail.com[39m
+2026-01-26 15:06:23:623 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 15:12:09:129 [32minfo[39m: [32mEmail sent: <d58eb2d1-4c4b-1377-c4b9-7ea0c4949b79@gmail.com> to shiferawyimenu@gmail.com[39m
+2026-01-26 15:22:32:2232 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 15:23:46:2346 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - OTP expired or not requested[39m
+2026-01-26 19:41:27:4127 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 19:49:04:494 [32minfo[39m: [32mEmail sent: <be4984d1-ffa8-7cb2-9c4b-5d88db83d0a1@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-26 19:49:41:4941 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - Invalid OTP[39m
+2026-01-26 20:04:10:410 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 20:06:33:633 [31merror[39m: [31m[POST] /api/v1/auth/request-otp >> 404 - No email address associated with this account. Cannot send verification code.[39m
+2026-01-26 20:17:12:1712 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 20:21:27:2127 [32minfo[39m: [32mEmail sent: <abeda915-3b8f-aa0f-73b7-97dec0e4e1da@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-26 21:49:29:4929 [32minfo[39m: [32mEmail sent: <4c35c08a-4e9f-799a-f2a3-8577c082dd84@gmail.com> to yimebelay00@gmail.com[39m
+2026-01-26 22:07:49:749 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 22:08:06:86 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 22:30:48:3048 [32minfo[39m: [32mEmail sent: <3a0334d0-c9ae-0460-c850-13e36fc8803c@gmail.com> to behayilushiferaw7@gmail.com[39m
+2026-01-26 22:50:53:5053 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 22:51:19:5119 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 22:51:39:5139 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 22:52:07:527 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-26 23:26:32:2632 [32minfo[39m: [32mEmail sent: <87765a02-64f0-acbb-ba23-27778aaed25d@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-26 23:27:11:2711 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - Invalid OTP[39m
+2026-01-26 23:28:35:2835 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - Invalid OTP[39m
+2026-01-26 23:28:38:2838 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - Invalid OTP[39m
+2026-01-26 23:28:43:2843 [32minfo[39m: [32mEmail sent: <c5d9c2fc-dfb5-9668-d803-c289d97e1fe9@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-26 23:28:46:2846 [32minfo[39m: [32mEmail sent: <2ec96a85-5614-fa7a-c926-39c899e494e1@gmail.com> to shiferawyimenu1@gmail.com[39m

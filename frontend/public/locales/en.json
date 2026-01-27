@@ -1,0 +1,29 @@
+{
+  "common": {
+    "welcome": "Welcome to Abhir Ride",
+    "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "status": "Status"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "super_admin": "Super Admin",
+    "dispatcher": "Dispatcher",
+    "fleet_manager": "Fleet Manager",
+    "support": "Support Agent"
+  },
+  "navigation": {
+    "drivers": "Drivers",
+    "rides": "Rides",
+    "vehicles": "Vehicles",
+    "users": "Users",
+    "reports": "Reports",
+    "settings": "Settings"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "common": {
+    "welcome": "እንኳን ወደ አቢር ራይድ በደህና መጡ",
+    "login": "ግባ",
+    "logout": "ውጣ",
+    "dashboard": "ዳሽቦርድ",
+    "search": "ፈልግ",
+    "save": "አስቀምጥ",
+    "cancel": "ሰርዝ",
+    "delete": "አጥፋ",
+    "edit": "አስተካክል",
+    "status": "ሁኔታ"
+  },
+  "roles": {
+    "admin": "አስተዳዳሪ",
+    "super_admin": "ዋና አስተዳዳሪ",
+    "dispatcher": "አከፋፋይ",
+    "fleet_manager": "የተሽከርካሪ መርከቦች ስራ አስኪያጅ",
+    "support": "የደንበኞች ድጋፍ"
+  },
+  "navigation": {
+    "drivers": "ሹፌሮች",
+    "rides": "ጉዞዎች",
+    "vehicles": "ተሽከርካሪዎች",
+    "users": "ተጠቃሚዎች",
+    "reports": "ሪፖርቶች",
+    "settings": "ቅንብሮች"
+  }
+}
