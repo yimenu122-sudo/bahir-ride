@@ -46,3 +46,39 @@
 2026-01-26 23:28:38:2838 [31merror[39m: [31m[POST] /api/v1/auth/verify-otp >> 400 - Invalid OTP[39m
 2026-01-26 23:28:43:2843 [32minfo[39m: [32mEmail sent: <c5d9c2fc-dfb5-9668-d803-c289d97e1fe9@gmail.com> to shiferawyimenu1@gmail.com[39m
 2026-01-26 23:28:46:2846 [32minfo[39m: [32mEmail sent: <2ec96a85-5614-fa7a-c926-39c899e494e1@gmail.com> to shiferawyimenu1@gmail.com[39m
+2026-01-28 09:28:39:2839 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-28 14:30:51:3051 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-28 14:51:21:5121 [32minfo[39m: [32mEmail sent: <634b58a9-dee5-7902-2996-3acdf85a553c@gmail.com> to abelshife68@gmail.com[39m
+2026-01-29 10:19:35:1935 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 10:47:27:4727 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 10:48:03:483 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 10:48:12:4812 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 10:48:37:4837 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 11:35:58:3558 [32minfo[39m: [32mEmail sent: <6cb2514b-1645-f752-2e40-40d7cd5ece91@gmail.com> to behayilushiferaw7@gmail.com[39m
+2026-01-29 11:38:21:3821 [31merror[39m: [31m[POST] /api/v1/auth/reset-password >> 400 - Invalid code[39m
+2026-01-29 11:50:50:5050 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 11:59:28:5928 [31merror[39m: [31m[POST] /api/v1/auth/reset-password >> 404 - User not found[39m
+2026-01-29 12:02:54:254 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 12:04:23:423 [32minfo[39m: [32mEmail sent: <16f04377-5ac8-43e9-d566-4cfb8edb0dfa@gmail.com> to abelshife68@gmail.com[39m
+2026-01-29 12:09:33:933 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 12:19:56:1956 [31merror[39m: [31m[POST] /api/v1/auth/register >> 500 - invalid input syntax for type date: "20002"[39m
+2026-01-29 12:21:42:2142 [32minfo[39m: [32mEmail sent: <80b6fcf8-2e3d-9940-58dc-7e9dd55dbb33@gmail.com> to abelshife68@gmail.com[39m
+2026-01-29 12:26:15:2615 [32minfo[39m: [32mEmail sent: <e252dc78-5c7f-07d6-8904-32aabf4f4040@gmail.com> to abelshife68@gmail.com[39m
+2026-01-29 13:21:50:2150 [32minfo[39m: [32mEmail sent: <bd3db274-fca0-d290-c426-7bc2bc4d1b51@gmail.com> to abelshife68@gmail.com[39m
+2026-01-29 13:31:59:3159 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 14:34:45:3445 [32minfo[39m: [32mEmail sent: <377265bc-1fb1-7d4e-327a-b06162e4c52b@gmail.com> to sisyeshi2@gmail.com[39m
+2026-01-29 16:18:01:181 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-29 16:20:42:2042 [32minfo[39m: [32mEmail sent: <1e38e308-bdef-f9af-d05f-f0d7b30c6a40@gmail.com> to yimenu122@gmail.com[39m
+2026-01-29 16:34:26:3426 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 21:13:01:131 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 21:16:20:1620 [31merror[39m: [31m[POST] /api/v1/auth/login >> 401 - Invalid phone/email or password[39m
+2026-01-30 21:18:25:1825 [31merror[39m: [31m[POST] /api/v1/auth/login >> 403 - Phone not verified. Please verify your account.[39m
+2026-01-30 22:47:33:4733 [32minfo[39m: [32mEmail sent: <f6ca48bd-f33b-644c-adee-ecbeefea39fb@gmail.com> to yimenu122@gmail.com[39m
+2026-01-30 23:04:47:447 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 23:05:06:56 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 23:05:27:527 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 23:05:40:540 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 23:24:52:2452 [32minfo[39m: [32mEmail sent: <63828771-48c8-2f54-68b4-289a65bd25b5@gmail.com> to yimenu122@gmail.com[39m
+2026-01-30 23:48:06:486 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m
+2026-01-30 23:49:58:4958 [32minfo[39m: [32mEmail sent: <8a0e7da4-0520-8ae6-0971-e70d5b97026b@gmail.com> to yimenu122@gmail.com[39m
+2026-01-31 00:13:12:1312 [32minfo[39m: [32m🚀 Server running on http://localhost:5000[39m

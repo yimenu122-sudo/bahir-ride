@@ -52,6 +52,13 @@ CREATE TYPE ride_booking_source AS ENUM (
     'kiosk'
 );
 
+-- Verification type enumeration
+CREATE TYPE verification_type AS ENUM (
+    'phone',    -- SMS / OTP
+    'email',    -- Email OTP / link
+    'document'  -- ID (Fayda, passport, license)
+);
+
 -- Main users table with RBAC implementation
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -103,7 +110,7 @@ CREATE INDEX idx_users_fayda_id ON users(fayda_id);
 CREATE TABLE user_verifications (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    verification_type VARCHAR(50) NOT NULL, -- 'phone', 'email', 'document'
+    verification_type verification_type NOT NULL, -- using strict ENUM
     verification_code VARCHAR(10),
     verified BOOLEAN DEFAULT FALSE,
     verified_at TIMESTAMP WITH TIME ZONE,

@@ -8,6 +8,7 @@ import {
   generateRefreshToken, 
   verifyRefreshToken, 
   UserRole,
+  VerificationType,
   jwtConfig,
   TokenPayload
 } from '../../config/jwt';
@@ -116,13 +117,13 @@ export const requestOTP = async (phoneNumber: string, role: string = 'passenger'
       // Delete old pending verifications for this user and type
       await db.query(
         'DELETE FROM user_verifications WHERE user_id = $1 AND verification_type = $2 AND verified = false', 
-        [userId, 'phone']
+        [userId, VerificationType.PHONE]
       );
       // Insert new verification record
       await db.query(
         `INSERT INTO user_verifications (user_id, verification_type, verification_code, expires_at) 
          VALUES ($1, $2, $3, $4)`,
-        [userId, 'phone', otp, new Date(Date.now() + 5 * 60 * 1000)] // 5 mins expiry
+        [userId, VerificationType.PHONE, otp, new Date(Date.now() + 5 * 60 * 1000)] // 5 mins expiry
       );
     }
   } catch (dbErr) {
@@ -286,11 +287,12 @@ export const verifyOTP = async (phoneNumber: string, inputOtp: string) => {
     }
     
     // 4b. Mark as verified in DB
+
     await client.query(
       `UPDATE user_verifications 
        SET verified = true, verified_at = NOW() 
-       WHERE user_id = $1 AND verification_type = 'phone' AND verified = false`,
-      [user.id]
+       WHERE user_id = $1 AND verification_type = $2 AND verified = false`,
+      [user.id, VerificationType.PHONE]
     );
 
     // Update last login
@@ -435,32 +437,42 @@ export const login = async (identifier: string, password: any) => {
     : 'SELECT * FROM users WHERE phone_number = $1';
 
   const result = await db.query(query, [normalizedIdentifier]);
+  const user = result.rows[0];
 
-  if (result.rows.length === 0) {
+  // 1. Check user exists
+  if (!user) {
     throw new AuthServiceError('Invalid phone/email or password', AuthErrors.INVALID_PHONE, 401);
   }
 
-  const user = result.rows[0];
+  // 2. Check users.status === 'ACTIVE'
+  // strictly check for 'active' as per flow, but maintain specific error for pending
+  if (user.status !== 'active') {
+    if (user.status === 'pending') {
+      throw new AuthServiceError('Phone not verified. Please verify your account.', 'AUTH_009', 403);
+    }
+    throw new AuthServiceError('Account is suspended or inactive', AuthErrors.USER_SUSPENDED, 403);
+  }
 
-  // Check if phone verified (status)
-  if (user.status === 'pending') {
-    // We can either auto-trigger OTP here or tell frontend to go to OTP screen
-    // For this flow, we tell frontend to navigate to verify screen
+  // 3. Check user_verifications.verified === true
+  const verificationRes = await db.query(
+    `SELECT 1 FROM user_verifications 
+     WHERE user_id = $1 AND verified = true 
+     LIMIT 1`,
+    [user.id]
+  );
+
+  if (verificationRes.rows.length === 0) {
     throw new AuthServiceError('Phone not verified. Please verify your account.', 'AUTH_009', 403);
   }
 
+  // 4. Verify password
   // Check if password is correct
   const isMatch = await bcrypt.compare(password, user.password_hash);
   if (!isMatch) {
     throw new AuthServiceError('Invalid phone/email or password', AuthErrors.INVALID_PHONE, 401);
   }
 
-  // Check Status
-  if (user.status === 'suspended' || user.status === 'inactive') {
-    throw new AuthServiceError('Account is suspended or inactive', AuthErrors.USER_SUSPENDED, 403);
-  }
-
-  // Generate Tokens
+  // 5. Generate JWT token
   const tokenPayload: TokenPayload = {
     userId: user.id,
     role: user.role,
@@ -473,6 +485,7 @@ export const login = async (identifier: string, password: any) => {
   // Update last login
   await db.query('UPDATE users SET last_login_at = NOW() WHERE id = $1', [user.id]);
 
+  // 6. Login success
   return {
     user: {
       id: user.id,
@@ -490,6 +503,197 @@ export const login = async (identifier: string, password: any) => {
   };
 };
 
+
+/**
+ * Request Password Reset (Send OTP via Email)
+ */
+export const requestPasswordResetOTP = async (identifier: string): Promise<void> => {
+  const normalizedIdentifier = identifier.includes('@') ? identifier.toLowerCase() : normalizePhoneNumber(identifier);
+
+  // Find user
+  const query = identifier.includes('@')
+    ? 'SELECT * FROM users WHERE email = $1'
+    : 'SELECT * FROM users WHERE phone_number = $1';
+  
+  const result = await db.query(query, [normalizedIdentifier]);
+  
+  if (result.rows.length === 0) {
+    // Return silently to prevent enumeration
+    return;
+  }
+  
+  const user = result.rows[0];
+  
+  if (!user.email) {
+    throw new AuthServiceError('No email address associated with this account.', AuthErrors.USER_NOT_FOUND, 400);
+  }
+
+  // Canonical Key: prefer phone_number as it's the primary ID usually, but email works too if phone is missing?
+  // Our schema requires phone_number.
+  const canonicalKey = user.phone_number;
+
+  // Generate OTP
+  const otp = generateOTP();
+
+  // Store in Redis (10 minutes)
+  const otpData = JSON.stringify({ otp, type: 'reset' });
+  await setCache(CacheNamespace.OTP, `reset:${canonicalKey}`, otpData, 600);
+
+  // Send Email
+  console.log(`🔐 Reset OTP for ${canonicalKey} (sent to ${user.email}): ${otp}`);
+  await sendEmail(
+    user.email,
+    'Bahir-Ride Password Reset',
+    `Your password reset code is: ${otp}`,
+    `
+    <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+      <h2>Reset Your Password</h2>
+      <p>You requested to reset your password. Use the code below:</p>
+      <h1 style="color: #E63946; font-size: 32px; letter-spacing: 5px;">${otp}</h1>
+      <p>This code expires in 10 minutes.</p>
+    </div>
+    `
+  );
+};
+
+/**
+ * Reset Password with OTP
+ */
+export const resetPassword = async (data: any) => {
+  const { identifier, code, new_password } = data;
+  console.log(`Debug Reset PW: Raw Identifier='${identifier}'`);
+  const normalizedIdentifier = identifier.includes('@') ? identifier.toLowerCase() : normalizePhoneNumber(identifier);
+  console.log(`Debug Reset PW: Normalized Identifier='${normalizedIdentifier}'`);
+
+  // 1. Resolve User to get Canonical Key
+  const query = identifier.includes('@')
+    ? 'SELECT * FROM users WHERE email = $1'
+    : 'SELECT * FROM users WHERE phone_number = $1';
+  
+  const result = await db.query(query, [normalizedIdentifier]);
+  
+  if (result.rows.length === 0) {
+    console.warn(`Debug Reset PW: User not found for identifier '${normalizedIdentifier}'`);
+    throw new AuthServiceError('User not found', AuthErrors.USER_NOT_FOUND, 404);
+  }
+  
+  const user = result.rows[0];
+  const canonicalKey = user.phone_number;
+
+  // 2. Verify OTP
+  const cachedDataRaw = await getCache<any>(CacheNamespace.OTP, `reset:${canonicalKey}`);
+  
+  if (!cachedDataRaw) {
+    throw new AuthServiceError('Reset code expired or invalid', AuthErrors.OTP_EXPIRED, 400);
+  }
+
+  let cachedOtp: string;
+  let cachedType: string = '';
+
+  if (typeof cachedDataRaw === 'object' && cachedDataRaw.otp) {
+    cachedOtp = String(cachedDataRaw.otp);
+    cachedType = cachedDataRaw.type;
+  } else {
+    cachedOtp = String(cachedDataRaw);
+  }
+
+  console.log(`Debug Reset PW: CachedType=${cachedType}, InputCode=${code}, CachedOtp=${cachedOtp}`);
+
+  if (cachedType !== 'reset') {
+     console.warn('Debug Reset PW: Invalid type');
+     throw new AuthServiceError('Invalid code type', AuthErrors.OTP_INVALID, 400);
+  }
+
+  if (String(code).trim() !== String(cachedOtp).trim()) {
+    console.warn(`Debug Reset PW: Code mismatch. Input: '${String(code).trim()}', Cached: '${String(cachedOtp).trim()}'`);
+    throw new AuthServiceError('Invalid code', AuthErrors.OTP_INVALID, 400);
+  }
+
+  // 3. Hash New Password
+  const passwordHash = await bcrypt.hash(new_password, 10);
+
+  // 4. Update Password
+  await db.query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, user.id]);
+
+  // 5. Clean up OTP
+  await deleteCache(CacheNamespace.OTP, `reset:${canonicalKey}`);
+};
+
+/**
+ * Verify Reset Code (Peek Only - Does not consume)
+ */
+export const verifyResetCode = async (identifier: string, code: string) => {
+  const normalizedIdentifier = identifier.includes('@') ? identifier.toLowerCase() : normalizePhoneNumber(identifier);
+  
+  // Resolve User
+  const query = identifier.includes('@')
+    ? 'SELECT * FROM users WHERE email = $1'
+    : 'SELECT * FROM users WHERE phone_number = $1';
+  
+  const result = await db.query(query, [normalizedIdentifier]);
+  if (result.rows.length === 0) {
+    throw new AuthServiceError('User not found', AuthErrors.USER_NOT_FOUND, 404);
+  }
+  
+  const user = result.rows[0];
+  const canonicalKey = user.phone_number;
+
+  // Retrieve OTP
+  const cachedDataRaw = await getCache<any>(CacheNamespace.OTP, `reset:${canonicalKey}`);
+  
+  if (!cachedDataRaw) {
+    throw new AuthServiceError('Reset code expired or invalid', AuthErrors.OTP_EXPIRED, 400);
+  }
+
+  let cachedOtp: string;
+  let cachedType: string = '';
+
+  if (typeof cachedDataRaw === 'object' && cachedDataRaw.otp) {
+    cachedOtp = String(cachedDataRaw.otp);
+    cachedType = cachedDataRaw.type;
+  } else {
+    cachedOtp = String(cachedDataRaw);
+  }
+
+  if (cachedType !== 'reset') {
+     throw new AuthServiceError('Invalid code type', AuthErrors.OTP_INVALID, 400);
+  }
+
+  if (String(code).trim() !== String(cachedOtp).trim()) {
+    throw new AuthServiceError('Invalid code', AuthErrors.OTP_INVALID, 400);
+  }
+  
+  return true; // Valid
+};
+
+/**
+ * Resend OTP
+ */
+export const resendOTP = async (identifier: string, type: 'registration' | 'reset' = 'registration') => {
+  if (type === 'reset') {
+    return requestPasswordResetOTP(identifier);
+  }
+
+  // For registration/login
+  const normalizedPhone = normalizePhoneNumber(identifier);
+  
+  // We need to find the user to get their role and email if possible
+  const userRes = await db.query('SELECT role, email FROM users WHERE phone_number = $1', [normalizedPhone]);
+  
+  if (userRes.rows.length === 0) {
+    // If user doesn't exist, they might be trying to register? 
+    // Or it's a new login.
+    // If not found, default to passenger and see if requestOTP handles it (it might fail if email required and not in DB).
+    // Actually requestOTP throws if no email found.
+    // So we can only resend if user exists or if we stored data? 
+    // But registrationUsingOTP creates the user first. So user SHOULD exist.
+    throw new AuthServiceError('User not found. Please register first.', AuthErrors.USER_NOT_FOUND, 404);
+  }
+  
+  const { role, email } = userRes.rows[0];
+  return requestOTP(normalizedPhone, role, email);
+};
+
 export default {
   requestOTP,
   verifyOTP,
@@ -497,5 +701,10 @@ export default {
   logout,
   getCurrentUser,
   login,
+  requestPasswordResetOTP,
+  resetPassword,
+  verifyResetCode,
+  resendOTP,
   AuthErrors
 };
+

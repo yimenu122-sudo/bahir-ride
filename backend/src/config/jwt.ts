@@ -23,6 +23,12 @@ export enum UserRole {
   SUPER_ADMIN = 'super_admin'
 }
 
+export enum VerificationType {
+  PHONE = 'phone',
+  EMAIL = 'email',
+  DOCUMENT = 'document'
+}
+
 export interface TokenPayload {
   userId: string;
   role: UserRole;

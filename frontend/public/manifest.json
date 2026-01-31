@@ -1,0 +1,24 @@
+{
+  "short_name": "Bahir-Ride",
+  "name": "Bahir-Ride: Transport in Bahir Dar",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/vite.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0F172A",
+  "background_color": "#0F172A",
+  "description": "Modern and reliable ride-sharing service in Bahir Dar, Ethiopia.",
+  "lang": "en-US",
+  "dir": "ltr",
+  "orientation": "portrait"
+}
